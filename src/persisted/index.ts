@@ -137,7 +137,11 @@ export const persisted = <T>(
 
   let initialSync: Promise<T>;
 
-  const thisStore = writable<T>(undefined, (set) => {
+  let writableInitial: T | undefined = undefined;
+  if (!isLoadable(initial) && initial !== undefined) {
+    writableInitial = initial;
+  }
+  const thisStore = writable<T>(writableInitial, (set) => {
     initialSync = synchronize(set);
   });
 
